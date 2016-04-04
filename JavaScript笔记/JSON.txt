@@ -1,0 +1,12 @@
+1、JSON 就是一种数据格式:把属性名用双引号" "；不能用单引号' '包起来，我们就把它称之为JSON。
+
+   Request(发送请求) + Response(响应) = 事物
+
+
+2、JSON格式数据的分析
+   
+   // window.JSON
+
+   // parse:把JSON格式的字符串转换为JSON格式的对象
+
+   // stringify:把JSON格式的对象转换为JSON格式的字符串

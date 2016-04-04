@@ -1,0 +1,167 @@
+一、单例模式：
+
+    在真实的项目中的单例模式应用->实现项目开发中的"模块化开发"
+
+    模块化开发：一个项目比较大，需要多个人一同协作开发，我们一般可以按照功能把一个页面划分成不同的几个模块。
+
+
+二、工厂模式：(其实就是封装)
+    工厂模式：把实现相同功能代码进行封装，制定为一个函数，以后在想实现这个功能就不需要在手动的写这些代码了，只需要把函数执行即可；-> "批量生产"
+
+    函数（类）的封装：低耦合高内聚 -> 减少页面中的冗余代码，提高代码的重复利用率。
+
+
+
+面向对象：类的继承、封装、多态
+
+
+1、在JS中有一个类 - > Array（数组类），我们的每一个数组都是它的一个实例
+
+2、类的多态
+
+   多态：类的重写（子类重写父类的方法）、类的重载
+
+   JS从严格意义上讲是不存在重载的，因为方法名相同的话，最后一个会把前面的所有的
+
+  （如果非要强行说有重载，我们把下述称之为重载：同一个方法，根据传递的参数不一样实现了不同的功能）
+
+   举例： function fn(num1,num2){
+            
+              if(typeof num2 ==== "undefined"){
+
+                 console.log("参数不合法！！");
+
+                 return;
+
+              }
+
+              console.log(num1 + num2);
+
+          }
+
+          fn(100,200);
+
+          fn(100);
+
+
+三、构造函数
+
+    在一个普通函数前面加上一个 new 关键字，那么函数名就不是叫函数名而是叫类； 而函数的变量就不叫变量而是叫实例。
+
+
+    1、数据类型？
+
+    -> 所有的类都是"都是函数数据类型"的（因为它就是一个普通函数，只不过执行的时候多加了个new了）
+
+    -> 严格意义来讲，所有的实例都是"对象数据类型"的 
+
+    2、检测某一个实例是否属于这个类？  -> instanceof
+
+       如：var fl = new Fn();
+
+           console.log(f1 instanceof Fn);  ==> true
+
+           console.log(f1 instanceof Fn);  ==> false
+
+           console.log([] instanceof Array);   ==> true
+
+       前面基础知识有个typeof 是检测基本数据类型
+
+       //->所有的类都是"函数数据类型"的(因为它就是一个普通的函数,只不过执行的时候加new了)
+       如：console.log(typeof Fn);//->"function"
+           console.log(typeof Array);//->"function"
+           console.log(typeof Object);//->"function"
+
+       //->严格意义来讲,所有的实例都是"对象数据类型"的
+       如：console.log(typeof f1);//->"object"
+           console.log(typeof [12, 23]);//->"object"
+           console.log(typeof 1);//->"number" 基本数据类型使用字面量方式创建的话不属于严谨的实例,基于面向对象创建的话才是严谨的实例
+           console.log(typeof new Number(1));//->"object"
+
+       举例：<script type="text/javascript">
+                 function Fn() {
+                      this.x = 100;
+                      this.getX = function () {
+                           console.log(this.x);
+                      }
+                  }
+                  var f1 = new Fn();
+                  var f2 = new Fn;     //->在构造函数模式中,如果方法不需要传递参数,那么后面的小括号可加也可以不加
+              </script>
+
+       还有检测getX是否为f1的一个属性
+
+       如：console.log("getX" in f1);   ==> true
+ 
+           console.log("toString" in f1);   ==> true
+
+       检测getX是否为f1的一个私有的属性:hasOwnProperty
+
+       如：console.log(f1.hasOwnProperty("getX"));   ==> true
+
+           console.log(f1.hasOwnProperty("toString"));   ==> false
+
+           只有是私有的就是true，不是私有的就是false。
+
+       instanceof 在检测是否属于某个类实例的时候，对于字面量方式创建出来的基本数据类型（不是严谨的实例）是无法进行检测的，只能检测通过面向对象（构造函数）创建出来的实例
+
+       如：console.log(1 instanceof Number);  ==> false
+
+       对应正确的是：console.log(new Number(1) instanceof Number);   ==> true
+
+    3、在构造函数模式中，通过this.xxx=xxx给实例增加的属性和方法都是自己实例"私有的属性和方法"
+
+
+四、基于构造函数的原型模式
+
+
+
+
+
+
+
+*五、不要问我为什么，因为这就是规定（背会）
+
+    1、所有的函数数据类型（普通的函数、所有的类）都天生自带一个属性：prototype(原型),
+   
+       这个属性存储的值是一个对象数据类型的值，浏览器默认为其属性值开辟一个堆内存
+
+    2、在这个堆内存上（"浏览器默认"给prototype开辟的这个），有一个天生自带的属性：constructor，属性值是当前类本身
+
+    3、所有的对象数据类型(普通对象、数组、正则、时间、类的实例、prototype)都天生自带一个属性：__proto__，这个属性指向当前实例所属类的原型
+
+       -> 这个属性指向当前实例所属类的原型（这句话举例：f1.__prototype__ = Fn.prototype;）  ==> 注意：在IE浏览器中，是禁止我们使用__proto__这个属性的：因为IE为了保护内置的一些方法和类不被修改。
+
+
+原型链记住两句话：
+
+第一句：所有的对象数据类型都是Object这个类的一个实例;
+
+第二句：Object是对象数据类型的基类，在它的原型上没有__prototype__   (如：console.log(Fn.prototype.__prototype__ === Object.prototype); 打印出来的是true)
+
+
+原型链查找模式：
+
+"实例.属性名"的时候，首先找自己的私有属性，私有的有的话，就不在往上查找了；私有的没有的话则通过
+
+
+
+
+作业：ary -> f1    Array -> Fn    交作业时间（30号晚上：23:59前）
+
+交作业地址：1002@zhufengpeixun.cn   
+
+标题：周末班+第一周作业
+
+
+
+
+
+
+
+
+
+
+
+       
+    

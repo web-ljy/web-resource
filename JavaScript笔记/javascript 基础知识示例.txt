@@ -1,0 +1,209 @@
+一、arguments （求和）
+
+    <script type="text/javascript">
+        function fn(){
+            var total=0;
+            for(var i=0;i<arguments.length;i++){
+                var cur=arguments[i];
+                cur=Number(cur);
+/*              if(isNaN(cur)===false){
+                    total+=cur;
+                }
+                等同于下面*/
+                if(!isNaN(cur)){
+                    total+=cur;
+                }
+            }
+            /*console.log(total);*/   //闭包机制：里面的变量外面是无法使用的；要想在外面想用里面的变量total，必须是想用谁就return 谁;
+            return total;
+        }
+        /*fn(1,2,"a")*/
+        var total=fn(1,2,6,"a");
+        console.log(total);
+    </script>
+
+
+    求平均：
+
+    <script type="text/javascript">
+      function fn() {                            // 求平均数
+            arguments.__proto__ = Array.prototype;
+            arguments.sort(function (a, b) {
+                return a - b;
+            });
+            arguments.shift();
+            arguments.pop();
+            console.log(eval(arguments.join("+")) / arguments.length);
+        }
+        fn(35, 67, 78, 89, 90, 12, 23, 34, 45);
+    </script>
+
+
+二、隔行换色
+
+    <script type="text/javascript">
+        var oBox = document.getElementById("box");
+        var aLis = oBox.getElementsByTagName("li");
+        for(var i=0;i<aLis.length;i++){
+            var oLi = aLis[i];
+
+            //增加一个自定义属性名（index）,属性值就是当前li的className的值。
+            i%2===0 ? (oLi.className = "cor1", oLi.index = "cor1") : (oLi.className = "cor2", oLi.index = "cor2");
+
+            oLi.onmouseover = function(){
+                this.className = "cor3";
+            };
+
+            oLi.onmouseout = function(){
+                // 原来是啥就是啥
+                var oldVal = this.index;      // 定义一个老的等于当前的
+                this.className = oldVal;      // 再让当前的等于原来的
+            }
+
+/*         switch(i%3){
+               case 0:
+                   oLi.className = "cor1";
+                   break;
+               case 1:
+                   oLi.className = "cor2";
+                   break;
+               default:
+                   oLi.className = "cor3";
+           }*/
+        }
+    </script>
+
+
+三、99乘法表
+
+    <script type="text/javascript">
+        window.onload=function(){
+            var oTab99=document.getElementById("tab99");
+            var str="";
+            str+="<ul>";
+            for(var i=1;i<=9;i++){
+                var cor="";
+                switch(i%3){
+                    case 0:
+                        cor="cor01";
+                        break;
+                    case 1:
+                        cor="cor02";
+                        break;
+                    default:
+                        cor="cor03";
+                 }
+                str+="<li class='"+cor+"'>";             // 循环 li 9行
+                for(var j=1;j<=i;j++){                // 循环span列数，有多少列就有多少行
+                    str+="<span>";
+                    str+=""+j+" * "+i+" = "+(j * i)+"";
+                    str+="</span>";
+                }
+                str+="</li>";
+            }
+            str+="</ul>";
+            oTab99.innerHTML=str;
+            console.log(str);
+        }
+     </script>
+
+
+四、选项卡
+
+    <!DOCTYPE html>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>选项卡</title>
+    <style type="text/css">
+        body,html,ul,li{padding:0;margin:0;}
+        ul,li{list-style:none;}
+        .clear{display:block;overflow:hidden;clear:both;height:0;line-height:0;font-size:0;}
+        .clearfix {*zoom:1;}
+        .clearfix:after{content: " "; display: block;height:0;clear:both;visibility:hidden;}
+        .tab_show{width:300px;margin:0 auto;padding:20px;}
+        .tab_show li{float:left;}
+        .tab_show li a{height:30px;line-height:30px;padding:0 20px;text-align:center;display:inline-block;border:1px solid #333;margin:0 -1px -1px 0;background-color:#fff;}
+        .tab_show .selected a{background-color:#ffff00;position:relative;border-bottom:1px solid #fff;}
+        .tab_show div{width:300px;height:200px;border:1px solid #333;display:none;}
+        .tab_show .active{display:block;}
+    </style>
+    <script type="text/javascript">
+        window.onload=function(){
+            var oTab=document.getElementById("tab");
+            var aLi=oTab.getElementsByTagName("li");
+            var aDiv=oTab.getElementsByTagName("div");
+
+            for(var i=0;i<aLi.length;i++){
+                aLi[i].index=i;
+                aLi[i].onmouseover=function(){
+                    for(var j=0;j<aLi.length;j++){
+                        aLi[j].className="";
+                        aDiv[j].className="";
+                    }
+                    this.className="selected";      //  this:是指当前绑定的元素（aLi[i]）。
+                    aDiv[this.index].className="active";
+                }
+            }
+        }
+    </script>
+
+
+五、数组的冒泡排序
+
+    <script type="text/javascript">
+        function sortArry(ary, type){
+            for(var i=0;i<ary.length-1;i++){             // i代表循环多少轮
+                for(var j=0;j<ary.length-1-i;j++){       // j代表每一轮循环多少次，这里的 i 表示每循环一次都要减去上一轮比较放后面的最大的数。
+                    if(ary[j]>ary[j+1]){                 // 索引值 j 当前值和后一个数比较大小
+                        var temp=ary[j];                 // 先定义一个空瓶子，再两两交换
+                        ary[j]=ary[j+1];
+                        ary[j+1]=temp;
+                    }
+                }
+            }
+
+            // type===1 ? ary.reverse() : void 0;       // 等同下面if判断
+            if(type===1)                                // 默认什么都不传参数的话就是升序；或者传一个参数 0代表升序，1代表降序。
+            {
+                ary.reverse();
+            }
+        }
+
+        var ary=[23,4,53,5,27,10,18,33];
+        sortArry(ary,1);
+        console.log(ary); 
+    </script>
+
+
+六、数组去重
+
+    <script type="text/javascript">
+    //方法1：两个for循环写法。
+/*      var ary=[2,4,3,7,9,2,5,3,4,53,6,8,4,6,5,45,2,2,4,3,7,9,2,5,3,4,53,6,8,4,6,5,45,2];
+        for(var i=0;i<ary.length;i++){        // 当前项i循环；
+            var cur=ary[i];                   // ary[i]是指当前i项；
+            for(var j=i+1;j<ary.length;j++)  // j是指索引(比如当前项i是2的索引是0；)
+            {
+                if(cur==ary[j]){              // 比较：当前项与前一项比较（当前项是ary[i]也是cur,前一项就是当前项的索引加1；也就是ary[j];）              {
+                    ary.splice(j,1);         // 如果判断有相等就删除一项；
+                    j--;
+                }
+            }
+        }
+        console.log(ary);*/
+
+    //方法2：一个for循环写法，也是常有的好方法。
+        var ary=[2,4,3,7,9,2,5,3,4,53,6,8,4,6,5,45,2,2,4,3,7,9,2,5,3,4,53,6,8,4,6,5,45,2];
+        var obj={};     //把ary数组中的每一项，当做一个新对象的属性名和属性值存起来，在存储的时候，判断当前的属性名是否存在，如果存在就代表数组该项重复了，就直接删除。如果不存在就直接存储；
+        for(var i=0;i<ary.length;i++){
+            var cur=ary[i];               // 表示数组ary[i]当前项赋值给了cur
+            if(obj[cur]==cur){            // 比如：如果对象obj[2]==2
+                ary.splice(i,1);          // 如果有相等就删除，删除一个数组ary总数发生了改变；所以索引值对应改变了，就 i-- 再接着循环上面的 i++ ,所以索引值就刚好正确位置。
+                i--;
+                continue;
+            }
+            obj[cur]=cur;
+        }
+        obj = null;
+        console.log(ary);
+    </script>

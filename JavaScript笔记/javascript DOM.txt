@@ -1,0 +1,235 @@
+一、DOM 获取的关系属性：
+
+    childNodes: 获取所有的子节点
+
+    children: 获取所有的元素子节点
+
+    parentNode: 获取父节点
+
+    previousSibling: 获取上一个哥哥节点
+
+    nextSibling: 获取下一个弟弟节点
+
+    firstChild: 获取所有子节点中的第一个节点
+
+    lastChild: 获取所有子节点中的最后一个节点
+
+    createElement: 动态创建一个元素 
+
+    appendChild: 把元素添加到指定的容器末尾
+
+    insertBefore: 把新的元素 newEle 添加到老的元素之前 oldEle 之前
+
+            语法：oldEle.parentNode.insertBefore(newEle,oldEle);
+         
+                  insertBefore(第一个参数是写要添加的元素，第二个参数是写添加谁之前就写谁)
+
+    removeChild: 删除指定元素
+
+    cloneNode: 克隆元素
+
+    replaceChild: 把新的元素 newEle 替换老元素 oldEle 
+
+            语法：oldEle.parentNode.replaceChild(newEle,oldEle);
+
+                  replaceChild(第一个参数是想让谁替换就写谁，第二是参数要把谁替换就写谁)
+
+    document.getElementsByName (注意：在IE浏览器下只对表单元素起作用，用于获取同样具有name的表单元素)
+
+
+
+    1:) 模拟一个children 获取元素的方法
+
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+            <title>dom节点和关系属性</title>
+            <script type="text/javascript">
+                window.onload=function(){
+        /*
+                    var oDom=document.getElementById("dom_demo");    // getElementById也是有点点坑，（稍微注意点就行别把表单中的文本框属性 name 值和页面上的唯一ID值重名就行。）
+                    console.log(oDom.style.background="red");
+                    console.log(oDom.children);      //  children是指获取子元素；注意这个有点坑是在IE6~8下也把注释当子元素获取到了，如果没有注释就没有问题。
+         */
+                    // 模拟一个children 获取元素的方法。
+                    function getMyChildren(ele){
+                        var ary=[];
+                        var nodes=ele.childNodes;              // 把所有的找出来：文本（text）、注释（comment）、元素
+                        for(var i=0;i<nodes.length;i++){
+                            var cur=nodes[i];                  // 循环的时候把当前的节点拿出来
+                            if(cur.nodeType===1){              // 判断当前的cur是文本（text）、注释（comment）、元素。如果是元素就是我们想要的就添加到空盒子中；
+                                ary.push(cur);
+                            }
+                        }
+                        return ary;
+                    }
+                    var oDom=document.getElementById("dom_demo");
+                    console.log(getMyChildren(oDom));
+                }
+            </script>
+        </head>
+        <body>
+        <!--<input type="text" name="dom_demo"/>-->
+        <div class="box" id="dom_demo">
+            <!-- dom节点示例 -->
+            <h1>dom节点示例</h1>
+            <ul>
+                <li><a href="javascript:;">html+css</a></li>
+                <li><a href="javascript:;">javascript</a></li>
+                <li><a href="javascript:;">node</a></li>
+                <li><a href="javascript:;">css3</a></li>
+                <li><a href="javascript:;">html5</a></li>
+            </ul>前端开发工程师
+        </div>
+        </body>
+
+     
+     2:) 模拟一个children (带传参数)获取元素的方法
+
+         <script type="text/javascript">
+                function getMyChildren(ele, tagName){
+                    var ary=[];
+                    var nodes=ele.childNodes;                // 把所有的找出来：文本（text）、注释（comment）、元素
+                    for(var i=0;i<nodes.length;i++){
+                        var cur=nodes[i];                    // 循环的时候把当前的节点拿出来
+                        if(cur.nodeType===1){                // 判断当前的cur是文本（text）、注释（comment）、元素。如果是元素就是我们想要的就添加到空盒子中；
+                            if(tagName){
+                                if(cur.nodeName.toLowerCase()===tagName.toLowerCase()){     // cur.nodeName是大写的，而tagName传的这个参数有可能是大写或者小写；所以得用toLowerCase()转换成统一小写。
+                                    ary.push(cur);
+                                }
+                            }else{                          // 是表示没有传参数的时候走else这步
+                                ary.push(cur);
+                            }
+                        }
+                    }
+                    return ary;
+                }
+                var oDom=document.getElementById("dom_demo");
+                console.log(getMyChildren(oDom, "ul"));
+         </script>
+    
+
+      3:) 模拟一个prev 获取一个哥哥的方法
+
+          <script type="text/javascript">
+              function prev(ele){
+                  var pre=ele.previousSibling;
+                  while(pre && pre.nodeType!==1){
+                     pre=pre.previousSibling;
+                  }
+                  return pre;
+               }
+               var oUl=document.getElementById("ul_list");
+               console.log(prev(oUl));
+           </script>
+
+
+      4:) 模拟一个prev 获取所有哥哥的方法
+
+          <script type="text/javascript">
+              function prevAll(ele){
+                 var pre=ele.previousSibling;
+                 var ary=[];
+                 while(pre){
+                    if(pre.nodeType===1){     // 如果是我们要找的东西就放到数组里面去，如果不是就到 pre=pre.previousSibling；这步
+                        ary.unshift(pre);     // 一直往上找所有得用unshift往前找
+                    }
+                    pre=pre.previousSibling;  // 一直找到我们想要的，pre.nodeType===1
+                 }
+                return ary;
+              }
+              var oP=document.getElementById("pDiv");
+              console.log(prevAll(oP));
+          </script>
+
+
+       5:) Math方法和应用
+           
+           几个操作数学方法：
+ 
+           ① Math.abs() 取绝对值
+
+           ② Math.ceil() 向上取整
+
+           ③ Math.floor() 向下取整
+
+           ④ Math.round() 四舍五入
+
+           ⑤ Math.max() 求最大值
+
+           ⑥ Math.min() 求最小值
+
+           ⑦ Math.random() 获取[0到1不包含1)之间的随机小数
+           
+           示例：Math随机数方法
+           <script type="text/javascript">
+                function getRandom(n, m){
+                   //首先不管传的参数是啥，先强制转换成有效数字
+                   var n=Number(n);
+                   var m=Number(m);
+
+                   if(isNaN(n) || isNaN(m)){      // 只要两个里面其中一个不是有效数字，就返回true
+                      return Math.random();
+                   }
+
+                   if(n>m){
+                      var temp=n;
+                      n=m;
+                      m=temp;
+                   }
+                   return Math.round(Math.random()*(m-n)+n);
+                 }
+                 console.log(getRandom(2, 20));
+            </script>
+
+
+        6:) Date应用
+
+            <script type="text/javascript">
+                var oDate=document.getElementById("date");
+                oDate.innerHTML+=formatTime();
+    
+                function formatTime(){
+                    var time=new Date();
+    
+                    var year=time.getFullYear();
+                    var month=time.getMonth()+1;                      //这里需要注意下：得到的是0到11，所以加上1代表1到12月；
+                    var day=time.getDate();
+                    var w=time.getDay();                              //这里需要注意下：得到的是0到6，表示着周日到周六；
+                    var wStr="日一二三四五六", week=wStr.charAt(w);    // 往索引上延伸变换对应字符串
+    
+                    var hours=time.getHours();
+                    var minut=time.getMinutes();
+                    var second=time.getSeconds();
+                    var misecond=time.getMilliseconds();
+    
+                    return year+"年" + getZero(month)+"月" + getZero(day)+"日" + " " + "星期"+ week + " " + getZero(hours)+"时" + getZero(minut)+"分" + getZero(second) +"秒";
+                }
+    
+                function getZero(value){
+                    return value<10 ? "0"+value : value;
+                }
+             </script>
+
+
+二、预解析
+
+       1:) <script type="text/javascript">
+               var n=9;
+               var s="str";
+
+               function fn(){
+                  alert(n);
+                  alert(s);
+                  n=7;
+                  var n=6;
+               };
+
+               fn();
+
+            /* 程序一加载首先找到带 var 和 function 的关键字，然后被预解释
+             * 上例中：fn()函数里面定义了变量n，那么引擎只会从这个函数里找变量n ；又因为n在alert的下面。
+             * 所以执行alert的时候，n还没有被赋值，所以弹出了undefined;如果fn()里面没有定义var n=6;
+             * 那么程序会往上找var n=9;*/
+
+            </script>
+    

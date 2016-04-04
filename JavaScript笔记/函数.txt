@@ -1,0 +1,21 @@
+call
+
+fn.call:fn通过原型链的查找机制，找到Function.prototype上的call方法（xxxfff000）
+
+fn.call():找到call方法之后，然后把call这个方法执行，此时call方法中的this -> 是fn
+ 
+Function.prototype.call=function(){
+}
+
+1:) 在call方法执行的时候，完成了一些事情：fn.call(obj)
+
+
+
+
+
+
+
+
+
+
+
