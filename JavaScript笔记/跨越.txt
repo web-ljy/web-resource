@@ -1,0 +1,41 @@
+什么是跨越？
+
+跨越也叫跨源  （源（origin）:<scheme>://<hostname>:<post>）  --> url的基本组成部分：协议（http://）域名（localhost）端口（8080）
+
+只要scheme/hostname/port这三个基本组成部分不一样，那么这个请求就叫做请求。 （如：从http://www.baidu.com 到 https://www.baidu.com）
+
+
+
+跨越资源共享
+
+cross ogigin resousce sharing -> CORS
+
+是利用浏览器提供的API实现的跨越。
+
+
+使用此功能 前提需要server在响应首部中添加
+
+Access-Control-Allow-Origin 这个首部可以传两种类型的值 */origin
+
+
+jsonp 和 cors 的区别？
+
+相同点：
+
+1、都是为了解决接口级别的跨越请求
+
+2、都需要server端强配合。（重要记住：任何跨越方式都需要server端强配合）
+
+不同点：
+
+1、http method 使用范围：
+  
+   jsonp只能使用get方法，而cors是get/post/head/delete/put都可以使用。
+
+2、兼容性
+
+   jsonp 没有兼容性，而cors能够在ie8+的浏览器中使用
+
+3、响应首部
+
+   jsonp不需要添加额外的响应首部，而cors

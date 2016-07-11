@@ -1,0 +1,4 @@
+
+window.location.href = " 地址 + 参数 "   --> 指:当前页面打开
+
+window.open(" 地址 + 参数 ")             --> 新页面打开
