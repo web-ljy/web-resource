@@ -39,3 +39,15 @@ jsonp 和 cors 的区别？
 3、响应首部
 
    jsonp不需要添加额外的响应首部，而cors
+
+
+
+讨论：如何解决跨越还有不同点
+
+      解决跨越有：Jsonp  / iframe / server(同源ie8+)
+                 
+      同步区别：都支持
+
+      post: jsonp只能使用get方法, iframe / server 支持
+ 
+      cookie: server 支持，Jsonp / iframe 不支持
